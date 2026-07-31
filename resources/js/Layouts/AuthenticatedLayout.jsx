@@ -44,6 +44,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     ⏰ Estoque & Validades
                                 </NavLink>
+                                <NavLink
+                                    href={route('admin.users.index')}
+                                    active={route().current('admin.users.index')}
+                                    className={route().current('admin.users.index') ? 'text-pink-400 border-pink-500' : 'text-slate-300 hover:text-white'}
+                                >
+                                    👥 Usuários
+                                </NavLink>
                             </div>
                         </div>
 
@@ -157,6 +164,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('stock.index')}
                         >
                             ⏰ Estoque & Validades
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.users.index')}
+                            active={route().current('admin.users.index')}
+                        >
+                            👥 Usuários
                         </ResponsiveNavLink>
                     </div>
 
