@@ -1,6 +1,22 @@
 <IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
     RewriteEngine On
-    # Redirecionar requisições para a pasta public se não forem arquivos/diretórios reais na raiz
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ public/$1 [L]
+
+    # 1. Definir index.php como o arquivo de índice principal
+    DirectoryIndex index.php
+
+    # 2. Servir favicon.ico e icon.ico diretamente da pasta public/
+    RewriteRule ^(favicon\.ico|icon\.ico)$ public/$1 [L,QSA]
+
+    # 3. Encaminhar pastas estáticas para a pasta public/
+    RewriteRule ^(images|build|css|js|storage)/(.*)$ public/$1/$2 [L,QSA]
+
+    # 4. Encaminhar rotas de navegação para o controlador principal index.php
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 </IfModule>
+
