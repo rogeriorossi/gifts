@@ -1,0 +1,72 @@
+# ==========================================
+# Laravel & Environment Configuration
+# ==========================================
+/.env
+/.env.backup
+/.env.production
+/.env.stage
+/.env.local
+/.env.*.local
+
+# ==========================================
+# Dependencies & Package Managers
+# ==========================================
+/vendor/
+/node_modules/
+/npm-debug.log*
+/yarn-error.log*
+/yarn-debug.log*
+/.pnpm-debug.log*
+
+# ==========================================
+# Frontend Assets & Vite
+# ==========================================
+/public/hot
+/public/storage
+/public/fonts-manifest.dev.json
+# Descomente a linha abaixo se NÃO for realizar o commit do build do Vite:
+# /public/build
+
+# ==========================================
+# Storage & Framework Caches
+# ==========================================
+/storage/*.key
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+/storage/pail/
+
+# ==========================================
+# Database & Test Artifacts
+# ==========================================
+*.sqlite
+*.sqlite-journal
+/.phpunit.cache
+/.phpunit.result.cache
+/Homestead.json
+/Homestead.yaml
+/_ide_helper.php
+/_ide_helper_models.php
+/.phpstorm.meta.php
+
+# ==========================================
+# IDEs & System Files
+# ==========================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+/.vscode/
+/.idea/
+/.cursor/
+/.codex/
+/.zed/
+/.nova/
+/.phpactor.json
+/auth.json
