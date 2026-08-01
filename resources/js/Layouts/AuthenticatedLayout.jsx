@@ -44,13 +44,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     ⏰ Estoque & Validades
                                 </NavLink>
-                                <NavLink
-                                    href={route('admin.users.index')}
-                                    active={route().current('admin.users.index')}
-                                    className={route().current('admin.users.index') ? 'text-pink-400 border-pink-500' : 'text-slate-300 hover:text-white'}
-                                >
-                                    👥 Usuários
-                                </NavLink>
+                                {Boolean(user?.is_admin) && (
+                                    <NavLink
+                                        href={route('admin.users.index')}
+                                        active={route().current('admin.users.index')}
+                                        className={route().current('admin.users.index') ? 'text-pink-400 border-pink-500' : 'text-slate-300 hover:text-white'}
+                                    >
+                                        👥 Usuários
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
@@ -165,12 +167,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             ⏰ Estoque & Validades
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('admin.users.index')}
-                            active={route().current('admin.users.index')}
-                        >
-                            👥 Usuários
-                        </ResponsiveNavLink>
+                        {Boolean(user?.is_admin) && (
+                            <ResponsiveNavLink
+                                href={route('admin.users.index')}
+                                active={route().current('admin.users.index')}
+                            >
+                                👥 Usuários
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     <div className="border-t border-slate-800 pb-1 pt-4">

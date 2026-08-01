@@ -13,8 +13,16 @@ use Inertia\Response;
 
 class UserController extends Controller
 {
+    private function checkAdmin(): void
+    {
+        if (! Auth::user() || ! Auth::user()->is_admin) {
+            abort(403, 'Acesso não autorizado.');
+        }
+    }
+
     public function index(): Response
     {
+        $this->checkAdmin();
         $users = User::latest()->get();
 
         return Inertia::render('Admin/Users/Index', [
@@ -24,6 +32,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $this->checkAdmin();
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
@@ -43,6 +53,8 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $this->checkAdmin();
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
@@ -67,6 +79,8 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $this->checkAdmin();
+
         if ($user->id === Auth::id()) {
             throw ValidationException::withMessages([
                 'user' => 'Você não pode excluir seu próprio usuário logado.'
