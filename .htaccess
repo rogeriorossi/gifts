@@ -5,6 +5,13 @@
 
     RewriteEngine On
 
+    # Bloquear acesso a arquivos ocultos (ex: .env, .git, .gitignore)
+    RewriteRule "(^|/)\." - [F]
+
+    # Bloquear acesso a arquivos de configuracao, logs e banco de dados
+    RewriteRule ^(\.env.*|composer\.(json|lock)|package\.(json|lock)|phpunit\.xml|README\.md|LICENSE)$ - [F]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|vendor)(/.*)?$ - [F]
+
     # 1. Definir index.php como o arquivo de índice principal
     DirectoryIndex index.php
 
@@ -12,11 +19,18 @@
     RewriteRule ^(favicon\.ico|icon\.ico)$ public/$1 [L,QSA]
 
     # 3. Encaminhar pastas estáticas para a pasta public/
-    RewriteRule ^(images|build|css|js|storage)/(.*)$ public/$1/$2 [L,QSA]
+    RewriteRule ^(images|build|css|js|storage/app/public)/(.*)$ public/$1/$2 [L,QSA]
 
     # 4. Encaminhar rotas de navegação para o controlador principal index.php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Bloquear listagem de diretórios e arquivos sensíveis adicionais
+<FilesMatch "^\.env|composer\.(json|lock)|package\.(json|lock)|phpunit\.xml">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
 

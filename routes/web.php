@@ -40,11 +40,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
     Route::post('/pos/sales', [PosController::class, 'store'])->name('pos.sales.store');
 
-    // Admin Users Management
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
-    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    // Admin Users Management (Apenas Administradores)
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
+        Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
 });
 
 require __DIR__.'/auth.php';
