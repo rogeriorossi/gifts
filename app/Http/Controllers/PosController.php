@@ -46,21 +46,26 @@ class PosController extends Controller
             $saleItemsToInsert = [];
 
             foreach ($validated['items'] as $itemData) {
-                $product = Product::with(['batches' => function ($q) {
-                    $q->where('quantity', '>', 0)->orderBy('expiration_date', 'asc');
-                }])->findOrFail($itemData['product_id']);
+                $product = Product::lockForUpdate()->findOrFail($itemData['product_id']);
+
+                $batches = $product->batches()
+                    ->where('quantity', '>', 0)
+                    ->orderBy('expiration_date', 'asc')
+                    ->lockForUpdate()
+                    ->get();
 
                 $requestedQty = (int) $itemData['quantity'];
+                $totalAvailableStock = (int) $batches->sum('quantity');
 
-                if ($product->total_stock < $requestedQty) {
+                if ($totalAvailableStock < $requestedQty) {
                     throw ValidationException::withMessages([
-                        'items' => "Estoque insuficiente para o produto {$product->name}. Solicitado: {$requestedQty}, Disponível: {$product->total_stock}."
+                        'items' => "Estoque insuficiente para o produto {$product->name}. Solicitado: {$requestedQty}, Disponível: {$totalAvailableStock}."
                     ]);
                 }
 
                 $remainingToDeduct = $requestedQty;
 
-                foreach ($product->batches as $batch) {
+                foreach ($batches as $batch) {
                     if ($remainingToDeduct <= 0) {
                         break;
                     }
